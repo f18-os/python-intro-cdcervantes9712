@@ -45,3 +45,4 @@ while True:
         if exitChek:
             sys.exit()
 	os.write(1, ("Terminated with exit code %d, Goodbye\n" % childPidCode).encode())
+	
