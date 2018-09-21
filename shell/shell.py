@@ -4,9 +4,7 @@ import os, sys, time, re
 
 pid = os.getpid()	# get and remember pid
 
-os.write(1, ("Shell Initializing...\n").encode())
-
-exitChek = False
+os.write(1, "Shell Initializing...\n".encode())
 
 while True:
     rc = os.fork()
@@ -16,16 +14,14 @@ while True:
         sys.exit()
 
     elif rc == 0:
-        os.write(1, ("$ ").encode())
-        input = os.read(0, 512)
-        input = userInput[:-1]
+        os.write(1, "$ ".encode())
+        u_input = os.read(0, 512)
+        u_input = u_input[:-1]
 
-        args = re.split(" ", input.decode())
+        args = re.split(" ", u_input.decode())
 
         if args[-1] == "exit":
             print(args[-1])
-            exitChek = True
-            break
             sys.exit()
 
         print(args[-1])
@@ -37,12 +33,9 @@ while True:
             except FileNotFoundError:	# ...expected
                 pass			# ...fail quietly
 
-        os.write(2, ("Error: could not exec \n").encode())
-	sys.exit(1)	# terminate with error
+        os.write(2, "Error: could not exec \n".encode())
+        sys.exit(1) # terminate with error
 
-    else:	# parent (forked ok)
+    else:   # parent (forked ok)
         childPidCode = os.wait()
-        if exitChek:
-            sys.exit()
-	os.write(1, ("Terminated with exit code %d, Goodbye\n" % childPidCode).encode())
-	
+        os.write(1, ("Terminated with exit code %d, Goodbye\n" % childPidCode).encode())
